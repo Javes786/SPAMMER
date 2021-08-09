@@ -9,7 +9,6 @@ from telethon.tl.functions.account import UpdateProfileRequest
 from Config import STRING, SUDO, BIO_MESSAGE, API_ID, API_HASH, STRING2, STRING3, STRING4 ,STRING5, STRING6, STRING7, STRING8 ,STRING9, STRING10
 import asyncio
 import telethon.utils
-import edit_or_reply as eor
 from telethon.tl import functions
 from telethon.tl.functions.channels import LeaveChannelRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest
@@ -909,9 +908,9 @@ async def get_users(event):
     sender = await event.get_sender()
     me = await event.client.get_me()
     if not sender.id == me.id:
-        atgk = await eor(event, "`processing...`")
+        atgk = await event.reply("`processing...`")
     else:
-        atgk = await eor(event, "`processing...`")
+        atgk = await event.edit("`processing...`")
     at_gk = event.pattern_match.group(1)
     if at_gk == "@javesgroup":
         return await atgk.edit("Restricted to invite users from there.")
