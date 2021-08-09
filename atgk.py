@@ -842,7 +842,6 @@ async def help(e):
 
  # --------------------------------------------------------------------------------------------------------------------------------
 
-
 from telethon.errors import (
     ChannelInvalidError,
     ChannelPrivateError,
@@ -851,6 +850,7 @@ from telethon.errors import (
 from telethon.tl import functions
 from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.messages import GetFullChatRequest
+
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
@@ -889,11 +889,24 @@ async def get_chatinfo(event):
     return chat_info
 
 
+def make_mention(user):
+    if user.username:
+        return f"@{user.username}"
+    else:
+        return inline_mention(user)
+
+
+def inline_mention(user):
+    full_name = user_full_name(user) or "No Name"
+    return f"[{full_name}](tg://user?id={user.id})"
+
+
 def user_full_name(user):
     names = [user.first_name, user.last_name]
     names = [i for i in list(names) if i]
     full_name = " ".join(names)
     return full_name
+
 
 @idk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 @ydk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
@@ -909,38 +922,37 @@ async def get_users(event):
     sender = await event.get_sender()
     me = await event.client.get_me()
     if not sender.id == me.id:
-        atgk = await event.reply("`processing...`")
+        rkp = await event.reply("`processing...`")
     else:
-        atgk = await event.edit("`processing...`")    
-    amaan = await get_chatinfo(event)
+        rkp = await event.edit("`processing...`")
+    rk1 = await get_chatinfo(event)
     chat = await event.get_chat()
     if event.is_private:
-        return await atgk.edit("`Sorry, Cant add users here`")
+        return await rkp.edit("`Sorry, Can add users here`")
     s = 0
     f = 0
     error = "None"
 
-    await atgk.edit("**INVITING USERS !!**")
-    async for user in event.client.iter_participants(amaan.full_chat.id):
+    await rkp.edit("**TerminalStatus**\n\n`Collecting Users.......`")
+    async for user in event.client.iter_participants(rk1.full_chat.id):
         try:
             if error.startswith("Too"):
-                return await atgk.edit(
-                    f"**INVITING FINISHED !**\n\n**Error :** \n`{error}`\n\n**Invited :**  `{s}` users. \n**Failed to Invite :** `{f}` users."
+                return await rkp.edit(
+                    f"**Terminal Finished With Error**\n(`May Got Limit Error from telethon Please try agin Later`)\n**Error** : \n`{error}`\n\n• Invited `{s}` people \n• Failed to Invite `{f}` people"
                 )
             await event.client(
                 functions.channels.InviteToChannelRequest(channel=chat, users=[user.id])
             )
             s = s + 1
-            await atgk.edit(
-                f"**INVITING USERS.. **\n\n**Invited :**  `{s}` users \n**Failed to Invite :**  `{f}` users.\n\n**×Error :**  `{error}`"
+            await rkp.edit(
+                f"**Terminal Running...**\n\n• Invited `{s}` people \n• Failed to Invite `{f}` people\n\n**× LastError:** `{error}`"
             )
         except Exception as e:
             error = str(e)
             f = f + 1
-    return await atgk.edit(
-        f"**INVITING FINISHED** \n\n**Invited :**  `{s}` users \n**Failed :**  `{f}` users."
+    return await rkp.edit(
+        f"**Terminal Finished** \n\n• Successfully Invited `{s}` people \n• failed to invite `{f}` people"
     )
-
 
 ################################
 from os import remove, execle, path, makedirs, getenv, environ
