@@ -3,4 +3,5 @@ python-dotenv
 asyncio
 TgCrypto
 heroku
+gitpython
 #kanged from yukki
