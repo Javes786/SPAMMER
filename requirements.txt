@@ -2,6 +2,6 @@ Telethon
 python-dotenv
 asyncio
 TgCrypto
-heroku
+heroku3
 gitpython
 #kanged from yukki
