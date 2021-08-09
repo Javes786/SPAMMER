@@ -3,6 +3,7 @@ from shutil import rmtree
 import asyncio
 import sys
 
+import atgk
 from telethon import TelegramClient, events
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
