@@ -652,7 +652,7 @@ async def _(event):
 @idk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
 @ydk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
 @wdk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
-@hdk.on(events.NewMessage(incoming=True, pattern=r"\.eplyraid"))
+@hdk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
 @sdk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
 @adk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
 @bdk.on(events.NewMessage(incoming=True, pattern=r"\.replyraid"))
@@ -908,9 +908,9 @@ async def get_users(event):
     sender = await event.get_sender()
     me = await event.client.get_me()
     if not sender.id == me.id:
-        atgk = await eor(event, "`processing...`")
+        atgk = await event.reply("`processing...`")
     else:
-        atgk = await eor(event, "`processing...`")
+        atgk = await event.edit("`processing...`")
     at_gk = event.pattern_match.group(1)
     if at_gk == "@javesgroup":
         return await atgk.edit("Restricted to invite users from there.")
