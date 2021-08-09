@@ -13,7 +13,7 @@ from telethon.tl import functions
 from telethon.tl.functions.channels import LeaveChannelRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest
 from Utils import RAID, RRAID
-
+from telethon.tl.functions import edit_or_reply as eor
 
 a = API_ID
 b = API_HASH
@@ -908,9 +908,9 @@ async def get_users(event):
     sender = await event.get_sender()
     me = await event.client.get_me()
     if not sender.id == me.id:
-        atgk = await event.reply("`processing...`")
+        atgk = await eor(event, "`processing...`")
     else:
-        atgk = await event.edit("`processing...`")
+        atgk = await eor(event, "`processing...`")
     at_gk = event.pattern_match.group(1)
     if at_gk == "@javesgroup":
         return await atgk.edit("Restricted to invite users from there.")
