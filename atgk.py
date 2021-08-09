@@ -946,7 +946,7 @@ from os import remove, execle, path, makedirs, getenv, environ
 from shutil import rmtree
 import asyncio
 import sys
-
+import git
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 
