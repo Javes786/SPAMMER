@@ -919,9 +919,7 @@ def user_full_name(user):
 @edk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 async def get_users(event):
-    sender = await event.get_sender()
-    me = await event.client.get_me()
-    if not sender.id == me.id:
+    if event.sender_id in SMEX_USERS:
         rkp = await event.reply("`processing...`")
     else:
         rkp = await event.edit("`processing...`")
@@ -1004,10 +1002,11 @@ async def updateme_requirements():
 @cdk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
 @edk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-async def upstream(ups):
+async def _(e):
+ if e.sender_id in SMEX_USERS:
     "For .update command, check if the bot is up to date, update if specified"
-    await ups.edit("** Checking for new updates 🧐🧐**")
-    conf = ups.pattern_match.group(1)
+    await e.edit("** Checking for new updates 🧐🧐**")
+    conf = e.pattern_match.group(1)
     off_repo = UPSTREAM_REPO_URL
     force_updateme = False
 
@@ -1016,16 +1015,16 @@ async def upstream(ups):
         txt += "some problems occured`\n\n**LOGTRACE:**\n"
         repo = Repo()
     except NoSuchPathError as error:
-        await ups.edit(f'{txt}\n`directory {error} is not found`')
+        await e.edit(f'{txt}\n`directory {error} is not found`')
         repo.__del__()
         return
     except GitCommandError as error:
-        await ups.edit(f'{txt}\n`Early failure! {error}`')
+        await e.edit(f'{txt}\n`Early failure! {error}`')
         repo.__del__()
         return
     except InvalidGitRepositoryError as error:
         if conf != "now":
-            await ups.edit(
+            await e.edit(
                 f"**Sync-Verification required since the directory {error} does not seem to be a git repository.\
                 \nSync-Verify now with {GIT_REPO_NAME}\
             \nTo do This type** `.update now`."
@@ -1041,7 +1040,7 @@ async def upstream(ups):
 
     ac_br = repo.active_branch.name
     if ac_br != 'master':
-        await ups.edit(
+        await e.edit(
             f'**[UPDATER]:**` Looks like you are using your own custom branch ({ac_br}). '
             'in that case, Updater is unable to identify '
              'which branch is to be merged. '
@@ -1054,13 +1053,13 @@ async def upstream(ups):
     except BaseException:
         pass
 
-    ups_rem = repo.remote('upstream')
-    ups_rem.fetch(ac_br)
+    e_rem = repo.remote('upstream')
+    e_rem.fetch(ac_br)
 
     changelog = await gen_chlog(repo, f'HEAD..upstream/{ac_br}')
 
     if not changelog and not force_updateme:
-        await ups.edit(
+        await e.edit(
             f'\nBot is  **up-to-date**  `with`  **[[{ac_br}]]({UPSTREAM_REPO_URL}/tree/{ac_br})**\n')
         repo.__del__()
         return
@@ -1068,26 +1067,26 @@ async def upstream(ups):
     if conf != "now" and not force_updateme:
         changelog_str = f'**New UPDATE available for [[{ac_br}]]({UPSTREAM_REPO_URL}/tree/{ac_br}):**\n\n' + '**CHANGELOG**\n\n' + f'{changelog}'
         if len(changelog_str) > 4096:
-            await ups.edit("`Changelog is too big, view the file to see it.`")
+            await e.edit("`Changelog is too big, view the file to see it.`")
             file = open("output.txt", "w+")
             file.write(changelog_str)
             file.close()
-            await ups.client.send_file(
-                ups.chat_id,
+            await e.client.send_file(
+                e.chat_id,
                 "output.txt",
-                reply_to=ups.id,
+                reply_to=e.id,
             )
             remove("output.txt")
         else:
-            await ups.edit(changelog_str)
-        await ups.respond(f'Do `.update now` to update')
+            await e.edit(changelog_str)
+        await e.respond(f'Do `.update now` to update')
         return
 
     if force_updateme:
-        await ups.edit(
+        await e.edit(
             '`Force-Updating to latest stable code, please wait sur😅😅...`')
     else:
-        await ups.edit('`Updating your` **ßoott** `please wait for 5 mins then type .alive/.ping/.help/.test to see if I am On...`')
+        await e.edit('`Updating your` **ßoott** `please wait for 5 mins then type .alive/.ping/.help/.test to see if I am On...`')
     # We're in a Heroku Dyno, handle it's memez.
     if config.HEROKU_API_KEY is not None:
         import heroku3
@@ -1095,7 +1094,7 @@ async def upstream(ups):
         heroku_app = None
         heroku_applications = heroku.apps()
         if not config.HEROKU_APP_NAME:
-            await ups.edit('`Please set up the HEROKU_APP_NAME configiable to be able to update SPAMMER.`')
+            await e.edit('`Please set up the HEROKU_APP_NAME configiable to be able to update SPAMMER.`')
             repo.__del__()
             return
         for app in heroku_applications:
@@ -1103,14 +1102,14 @@ async def upstream(ups):
                 heroku_app = app
                 break
         if heroku_app is None:
-            await ups.edit(
+            await e.edit(
                 f'{txt}\n`Invalid Heroku credentials for updating.`'
             )
             repo.__del__()
             return
-        await ups.edit('`Updating Started 😎😎✨\nRestarting, please wait 5min then type .alive to check if I alive!!!🙂`'
+        await e.edit('`Updating Started 😎😎✨\nRestarting, please wait 5min then type .alive to check if I alive!!!🙂`'
                        )
-        ups_rem.fetch(ac_br)
+        e_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
         heroku_git_url = heroku_app.git_url.replace(
             "https://", "https://api:" + config.HEROKU_API_KEY + "@")
@@ -1122,19 +1121,19 @@ async def upstream(ups):
         try:
             remote.push(refspec="HEAD:refs/heads/master", force=True)
         except GitCommandError as error:
-            await ups.edit(f'{txt}\n`Here is the error log:\n{error}`')
+            await e.edit(f'{txt}\n`Here is the error log:\n{error}`')
             repo.__del__()
             return
-        await ups.edit('`Sync Verified Successfully 🙂🙂\n'
+        await e.edit('`Sync Verified Successfully 🙂🙂\n'
                        'Restarting, please wait a min ,then type .alive to check if I alive 😂!!`')
     else:
         # Classic Updater, pretty straightforward.
         try:
-            ups_rem.pull(ac_br)
+            e_rem.pull(ac_br)
         except GitCommandError:
             repo.git.reset("--hard", "FETCH_HEAD")
         await updateme_requirements()
-        await ups.edit('`Successfully Updated!\n'
+        await e.edit('`Successfully Updated!\n'
                        'Bot is restarting... Wait for a minute😎😎!`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "atgk"]
