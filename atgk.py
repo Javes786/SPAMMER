@@ -962,7 +962,7 @@ async def get_users(event):
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
 async def _(event):
     if event.sender_id in SMEX_USERS:
-    if event.fwd_from:
+     if event.fwd_from:
         return
     to_add_users = event.pattern_match.group(1)
     if event.is_private:
