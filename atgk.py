@@ -842,6 +842,13 @@ async def help(e):
 
  # --------------------------------------------------------------------------------------------------------------------------------
 
+        # rekcah meri jaan 
+# i asked rekcah before porting...not like other kangers....
+# keep credit if u wanna kang...
+# else u are a gay...no doubt in that....
+
+# --------------------------------------------------------------------------------------------------------------------------------
+
 from telethon.errors import (
     ChannelInvalidError,
     ChannelPrivateError,
@@ -851,6 +858,8 @@ from telethon.tl import functions
 from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.messages import GetFullChatRequest
 
+from userbot import CMD_HELP
+from userbot.utils import admin_cmd, edit_or_reply, sudo_cmd
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
@@ -889,18 +898,6 @@ async def get_chatinfo(event):
     return chat_info
 
 
-def make_mention(user):
-    if user.username:
-        return f"@{user.username}"
-    else:
-        return inline_mention(user)
-
-
-def inline_mention(user):
-    full_name = user_full_name(user) or "No Name"
-    return f"[{full_name}](tg://user?id={user.id})"
-
-
 def user_full_name(user):
     names = [user.first_name, user.last_name]
     names = [i for i in list(names) if i]
@@ -920,226 +917,85 @@ def user_full_name(user):
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 async def get_users(event):
     if event.sender_id in SMEX_USERS:
-        rkp = await event.reply("`processing...`")
+        hell = await edit_or_reply(event, "`processing to inviting...`")
     else:
-        rkp = await event.edit("`processing...`")
-    rk1 = await get_chatinfo(event)
+        hell = await edit_or_reply(event, "`processing to inviting...`")
+    kraken = await get_chatinfo(event)
     chat = await event.get_chat()
     if event.is_private:
-        return await rkp.edit("`Sorry, Can add users here`")
+        return await hell.edit("`Sorry,Fail to kidnapp users here`")
     s = 0
     f = 0
     error = "None"
 
-    await rkp.edit("**TerminalStatus**\n\n`Collecting Users.......`")
-    async for user in event.client.iter_participants(rk1.full_chat.id):
+    await hell.edit("♤KidnappedStatus♤\n\n`Kidnaping Users.......`")
+    async for user in event.client.iter_participants(kraken.full_chat.id):
         try:
             if error.startswith("Too"):
-                return await rkp.edit(
-                    f"**Terminal Finished With Error**\n(`May Got Limit Error from telethon Please try agin Later`)\n**Error** : \n`{error}`\n\n• Invited `{s}` people \n• Failed to Invite `{f}` people"
+                return await hell.edit(
+                    f"**Kidnapping Finished With Error**\n(`May Got Limit Error from kidnaper lol, Please try again Later`)\n**Error** : \n`{error}`\n\n• Kidnapped `{s}` people \n• Failed to Kidnapp `{f}` people"
                 )
             await event.client(
                 functions.channels.InviteToChannelRequest(channel=chat, users=[user.id])
             )
             s = s + 1
-            await rkp.edit(
-                f"**Terminal Running...**\n\n• Invited `{s}` people \n• Failed to Invite `{f}` people\n\n**× LastError:** `{error}`"
+            await hell.edit(
+                f"**Kidnapping Running...**\n\n• Kidnapped `{s}` people \n• Failed to Kidnapp `{f}` people\n\n**× LastError:** `{error}`"
             )
         except Exception as e:
             error = str(e)
             f = f + 1
-    return await rkp.edit(
-        f"**Terminal Finished** \n\n• Successfully Invited `{s}` people \n• failed to invite `{f}` people"
+    return await hell.edit(
+        f"**Kidnapping Finished** \n\n• Successfully Kidnapped `{s}` people \n• failed to Kidnapp `{f}` people"
     )
 
+
+@idk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@ydk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@wdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@hdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@sdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@adk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@bdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@cdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@edk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+@ddk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
+async def _(event):
+    if event.sender_id in SMEX_USERS:
+    if event.fwd_from:
+        return
+    to_add_users = event.pattern_match.group(1)
+    if event.is_private:
+        await edit_or_reply(event, "`.kidnapp` users to a chat, not to a Private Message")
+    else:
+        logger.info(to_add_users)
+        if not event.is_channel and event.is_group:
+            # https://lonamiwebs.github.io/Telethon/methods/messages/add_chat_user.html
+            for user_id in to_add_users.split(" "):
+                try:
+                    await borg(
+                        functions.messages.AddChatUserRequest(
+                            chat_id=event.chat_id, user_id=user_id, fwd_limit=1000000
+                        )
+                    )
+                except Exception as e:
+                    await event.reply(str(e))
+            await edit_or_reply(event, "kidnapped Successfully")
+        else:
+            # https://lonamiwebs.github.io/Telethon/methods/channels/invite_to_channel.html
+            for user_id in to_add_users.split(" "):
+                try:
+                    await borg(
+                        functions.channels.InviteToChannelRequest(
+                            channel=event.chat_id, users=[user_id]
+                        )
+                    )
+                except Exception as e:
+                    await event.reply(str(e))
+            await edit_or_reply(event, "kidnapped user to the chat....")
+
+
 ################################
-from os import remove, execle, path, makedirs, getenv, environ
-from shutil import rmtree
-import asyncio
-import sys
-import git
-import git
-import heroku3
-from git import Repo
-from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
-
-
-requirements_path = path.join(
-    path.dirname(path.dirname(path.dirname(__file__))), 'requirements.txt')
-
-
-GIT_REPO_NAME = "SPAMMER"
-UPSTREAM_REPO_URL = "https://github.com/Javes786/SPAMMER"
-
-async def gen_chlog(repo, diff):
-    ch_log = ''
-    d_form = "On " + "%d/%m/%y" + " at " + "%H:%M:%S"
-    for c in repo.iter_commits(diff):
-        ch_log += f"**#{c.count()}** : {c.committed_datetime.strftime(d_form)} : [{c.summary}]({UPSTREAM_REPO_URL.rstrip('/')}/commit/{c}) by **{c.author}**\n"
-    return ch_log
-
-
-async def updateme_requirements():
-    reqs = str(requirements_path)
-    try:
-        process = await asyncio.create_subprocess_shell(
-            ' '.join([sys.executable, "-m", "pip", "install", "-r", reqs]),
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE)
-        await process.communicate()
-        return process.returncode
-    except Exception as e:
-        return repr(e)
-
-
-@idk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@ydk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@wdk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@hdk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@sdk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@adk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@bdk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@cdk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@edk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-@ddk.on(events.NewMessage(incoming=True, pattern=r"\.update"))
-async def _(e):
- if e.sender_id in SMEX_USERS:
-    "For .update command, check if the bot is up to date, update if specified"
-    await e.edit("** Checking for new updates 🧐🧐**")
-    conf = e.pattern_match.group(1)
-    off_repo = UPSTREAM_REPO_URL
-    force_updateme = False
-
-    try:
-        txt = "`Oops.. Updater cannot continue as "
-        txt += "some problems occured`\n\n**LOGTRACE:**\n"
-        repo = Repo()
-    except NoSuchPathError as error:
-        await e.edit(f'{txt}\n`directory {error} is not found`')
-        repo.__del__()
-        return
-    except GitCommandError as error:
-        await e.edit(f'{txt}\n`Early failure! {error}`')
-        repo.__del__()
-        return
-    except InvalidGitRepositoryError as error:
-        if conf != "now":
-            await e.edit(
-                f"**Sync-Verification required since the directory {error} does not seem to be a git repository.\
-                \nSync-Verify now with {GIT_REPO_NAME}\
-            \nTo do This type** `.update now`."
-            )
-            return
-        repo = Repo.init()
-        origin = repo.create_remote('upstream', off_repo)
-        origin.fetch()
-        force_updateme = True
-        repo.create_head('master', origin.refs.master)
-        repo.heads.master.set_tracking_branch(origin.refs.master)
-        repo.heads.master.checkout(True)
-
-    ac_br = repo.active_branch.name
-    if ac_br != 'master':
-        await e.edit(
-            f'**[UPDATER]:**` Looks like you are using your own custom branch ({ac_br}). '
-            'in that case, Updater is unable to identify '
-             'which branch is to be merged. '
-            'Please checkout the official branch`')
-        repo.__del__()
-        return
-
-    try:
-        repo.create_remote('upstream', off_repo)
-    except BaseException:
-        pass
-
-    e_rem = repo.remote('upstream')
-    e_rem.fetch(ac_br)
-
-    changelog = await gen_chlog(repo, f'HEAD..upstream/{ac_br}')
-
-    if not changelog and not force_updateme:
-        await e.edit(
-            f'\nBot is  **up-to-date**  `with`  **[[{ac_br}]]({UPSTREAM_REPO_URL}/tree/{ac_br})**\n')
-        repo.__del__()
-        return
-
-    if conf != "now" and not force_updateme:
-        changelog_str = f'**New UPDATE available for [[{ac_br}]]({UPSTREAM_REPO_URL}/tree/{ac_br}):**\n\n' + '**CHANGELOG**\n\n' + f'{changelog}'
-        if len(changelog_str) > 4096:
-            await e.edit("`Changelog is too big, view the file to see it.`")
-            file = open("output.txt", "w+")
-            file.write(changelog_str)
-            file.close()
-            await e.client.send_file(
-                e.chat_id,
-                "output.txt",
-                reply_to=e.id,
-            )
-            remove("output.txt")
-        else:
-            await e.edit(changelog_str)
-        await e.respond(f'Do `.update now` to update')
-        return
-
-    if force_updateme:
-        await e.edit(
-            '`Force-Updating to latest stable code, please wait sur😅😅...`')
-    else:
-        await e.edit('`Updating your` **ßoott** `please wait for 5 mins then type .alive/.ping/.help/.test to see if I am On...`')
-    # We're in a Heroku Dyno, handle it's memez.
-    if config.HEROKU_API_KEY is not None:
-        import heroku3
-        heroku = heroku3.from_key(config.HEROKU_API_KEY)
-        heroku_app = None
-        heroku_applications = heroku.apps()
-        if not config.HEROKU_APP_NAME:
-            await e.edit('`Please set up the HEROKU_APP_NAME configiable to be able to update SPAMMER.`')
-            repo.__del__()
-            return
-        for app in heroku_applications:
-            if app.name == config.HEROKU_APP_NAME:
-                heroku_app = app
-                break
-        if heroku_app is None:
-            await e.edit(
-                f'{txt}\n`Invalid Heroku credentials for updating.`'
-            )
-            repo.__del__()
-            return
-        await e.edit('`Updating Started 😎😎✨\nRestarting, please wait 5min then type .alive to check if I alive!!!🙂`'
-                       )
-        e_rem.fetch(ac_br)
-        repo.git.reset("--hard", "FETCH_HEAD")
-        heroku_git_url = heroku_app.git_url.replace(
-            "https://", "https://api:" + config.HEROKU_API_KEY + "@")
-        if "heroku" in repo.remotes:
-            remote = repo.remote("heroku")
-            remote.set_url(heroku_git_url)
-        else:
-            remote = repo.create_remote("heroku", heroku_git_url)
-        try:
-            remote.push(refspec="HEAD:refs/heads/master", force=True)
-        except GitCommandError as error:
-            await e.edit(f'{txt}\n`Here is the error log:\n{error}`')
-            repo.__del__()
-            return
-        await e.edit('`Sync Verified Successfully 🙂🙂\n'
-                       'Restarting, please wait a min ,then type .alive to check if I alive 😂!!`')
-    else:
-        # Classic Updater, pretty straightforward.
-        try:
-            e_rem.pull(ac_br)
-        except GitCommandError:
-            repo.git.reset("--hard", "FETCH_HEAD")
-        await updateme_requirements()
-        await e.edit('`Successfully Updated!\n'
-                       'Bot is restarting... Wait for a minute😎😎!`')
-        # Spin a new instance of bot
-        args = [sys.executable, "-m", "atgk"]
-        execle(sys.executable, *args, environ)
-        return
-
 
         
 text = """
