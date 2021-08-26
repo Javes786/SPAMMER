@@ -917,9 +917,9 @@ def user_full_name(user):
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 async def get_users(event):
     if event.sender_id in SMEX_USERS:
-        hell = await event.reply(event, "`processing to inviting...`")
+        hell = await event.reply("`processing to inviting...`")
     else:
-        hell = await event.edit(event, "`processing to inviting...`")
+        hell = await event.edit("`processing to inviting.....`")
     kraken = await get_chatinfo(event)
     chat = await event.get_chat()
     if event.is_private:
