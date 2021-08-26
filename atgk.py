@@ -966,7 +966,7 @@ async def _(event):
         return
     to_add_users = event.pattern_match.group(1)
     if event.is_private:
-        await edit_or_reply(event, "`.kidnapp` users to a chat, not to a Private Message")
+        await event.reply("`.kidnapp` users to a chat, not to a Private Message")
     else:
         logger.info(to_add_users)
         if not event.is_channel and event.is_group:
@@ -980,7 +980,7 @@ async def _(event):
                     )
                 except Exception as e:
                     await event.reply(str(e))
-            await edit_or_reply(event, "kidnapped Successfully")
+            await event.reply("kidnapped Successfully")
         else:
             # https://lonamiwebs.github.io/Telethon/methods/channels/invite_to_channel.html
             for user_id in to_add_users.split(" "):
@@ -992,7 +992,7 @@ async def _(event):
                     )
                 except Exception as e:
                     await event.reply(str(e))
-            await edit_or_reply(event, "kidnapped user to the chat....")
+            await event.reply("kidnapped user to the chat....")
 
 
 ################################
