@@ -858,7 +858,7 @@ from telethon.tl import functions
 from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.messages import GetFullChatRequest
 
-from userbot import CMD_HELP
+
 from userbot.utils import admin_cmd, edit_or_reply, sudo_cmd
 
 async def get_chatinfo(event):
