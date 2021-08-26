@@ -863,7 +863,7 @@ from telethon.tl.functions.messages import GetFullChatRequest
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
-    chat_info = None
+    chat_info = await event.client(GetFullChatRequest(chat))
     if chat:
         try:
             chat = int(chat)
