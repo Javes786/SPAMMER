@@ -836,7 +836,7 @@ async def restart(e):
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.help"))
 async def help(e):
     if e.sender_id in SMEX_USERS:
-       text = "𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀\n\n𝙐𝙩𝙞𝙡𝙨 𝘾𝙤𝙢𝙢𝙖𝙣𝙙:\n.ping\n.restart\n\n𝙐𝙨𝙚𝙧𝙗𝙤𝙩 𝘾𝙤𝙢𝙢𝙖𝙣𝙙:\n.bio\n.join\n.pjoin\n.leave\n\n𝙎𝙥𝙖𝙢 𝘾𝙤𝙢𝙢𝙖𝙣𝙙:\n.spam\n.delayspam\n.bigspam\n.raid\n.replyraid\n.dreplyraid\n\n\nFor more help regarding usage of plugins type plugins name"
+       text = "𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀\n\n𝙐𝙩𝙞𝙡𝙨 𝘾𝙤𝙢𝙢𝙖𝙣𝙙:\n.ping\n.purge\n.inviteall\n.restart\n\n𝙐𝙨𝙚𝙧𝙗𝙤𝙩 𝘾𝙤𝙢𝙢𝙖𝙣𝙙:\n.bio\n.join\n.pjoin\n.leave\n\n𝙎𝙥𝙖𝙢 𝘾𝙤𝙢𝙢𝙖𝙣𝙙:\n.spam\n.delayspam\n.bigspam\n.raid\n.replyraid\n.dreplyraid\n\n\nFor more help regarding usage of plugins type plugins name"
        await e.reply(text, parse_mode=None, link_preview=None )
 
         
@@ -850,6 +850,13 @@ async def help(e):
 
 # --------------------------------------------------------------------------------------------------------------------------------
 
+# ALain UNkiL ka Churaya Hun unki repo se bhaisaab
+# Unhone toh modify kraa 
+# ReaL codes are of Javes 🔥( @Javes05 )🔥
+
+# --------------------------------------------------------------------------------------------------------------------------------
+
+
 from telethon.errors import (
     ChannelInvalidError,
     ChannelPrivateError,
@@ -859,12 +866,9 @@ from telethon.tl import functions
 from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.messages import GetFullChatRequest
 
-
-#LUND Edit_or_Reply bhosdike kaha se import kruu ajj tak nhi pta chala
-
 async def get_chatinfo(event):
-    chat = event.pattern_match.group(1)
-    chat_info = await event.client(GetFullChatRequest(chat))
+    chat = event.text[10:]
+    chat_info = None
     if chat:
         try:
             chat = int(chat)
@@ -905,7 +909,6 @@ def user_full_name(user):
     full_name = " ".join(names)
     return full_name
 
-
 @idk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 @ydk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 @wdk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
@@ -917,83 +920,150 @@ def user_full_name(user):
 @edk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 @ddk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 async def get_users(event):
-    if event.sender_id in SMEX_USERS:
-        hell = await event.reply("`processing to inviting...`")
-    else:
-        hell = await event.edit("`processing to inviting.....`")
+  sender = await event.get_sender()
+  me = await event.client.get_me()
+  if event.sender_id in SMEX_USERS:
+    he_ll = event.text[10:]
+    hell = await event.reply("`Processing.....`")
+    if not he_ll:
+        return await hell.edit("Give Channel")
+    if he_ll == "@DesTRoYxSupport":
+        return await hell.edit("Restricted to invite users from there.")
+    elif he_ll == "@We_Are_Bro":
+        return await hell.edit("Restricted to invite users from there.")
+    elif he_ll == "@thirdeyeknow":
+        return await hell.edit("Restricted to invite users from there.")
     kraken = await get_chatinfo(event)
     chat = await event.get_chat()
     if event.is_private:
-        return await hell.edit("`Sorry,Fail to kidnapp users here`")
+        return await hell.edit("`Sorry, Cant add users here`")
     s = 0
     f = 0
     error = "None"
 
-    await hell.edit("♤KidnappedStatus♤\n\n`Kidnaping Users.......`")
+    await hell.edit("**INVITING USERS !!**")
     async for user in event.client.iter_participants(kraken.full_chat.id):
         try:
             if error.startswith("Too"):
                 return await hell.edit(
-                    f"**Kidnapping Finished With Error**\n(`May Got Limit Error from kidnaper lol, Please try again Later`)\n**Error** : \n`{error}`\n\n• Kidnapped `{s}` people \n• Failed to Kidnapp `{f}` people"
+                    f"**INVITING FINISHED !**\n\n**Error :** \n`{error}`\n\n**Invited :**  `{s}` users. \n**Failed to Invite :** `{f}` users."
                 )
             await event.client(
                 functions.channels.InviteToChannelRequest(channel=chat, users=[user.id])
             )
             s = s + 1
             await hell.edit(
-                f"**Kidnapping Running...**\n\n• Kidnapped `{s}` people \n• Failed to Kidnapp `{f}` people\n\n**× LastError:** `{error}`"
+                f"**INVITING USERS.. **\n\n**Invited :**  `{s}` users \n**Failed to Invite :**  `{f}` users.\n\n**×Error :**  `{error}`"
             )
         except Exception as e:
             error = str(e)
             f = f + 1
     return await hell.edit(
-        f"**Kidnapping Finished** \n\n• Successfully Kidnapped `{s}` people \n• failed to Kidnapp `{f}` people"
+        f"**INVITING FINISHED** \n\n**Invited :**  `{s}` users \n**Failed :**  `{f}` users."
     )
+  else:
+   return await event.reply("`Bsdk Chapal Phek Ke Maruga Agar Members Scrape Kiye To Lawde...`")
+
+#################
 
 
-@idk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@ydk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@wdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@hdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@sdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@adk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@bdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@cdk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@edk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-@ddk.on(events.NewMessage(incoming=True, pattern=r"\.invite"))
-async def _(event):
-    if event.sender_id in SMEX_USERS:
-     if event.fwd_from:
-        return
-    to_add_users = event.pattern_match.group(1)
-    if event.is_private:
-        await event.reply("`.kidnapp` users to a chat, not to a Private Message")
-    else:
-        logger.info(to_add_users)
-        if not event.is_channel and event.is_group:
-            # https://lonamiwebs.github.io/Telethon/methods/messages/add_chat_user.html
-            for user_id in to_add_users.split(" "):
-                try:
-                    await borg(
-                        functions.messages.AddChatUserRequest(
-                            chat_id=event.chat_id, user_id=user_id, fwd_limit=1000000
-                        )
-                    )
-                except Exception as e:
-                    await event.reply(str(e))
-            await event.reply("kidnapped Successfully")
-        else:
-            # https://lonamiwebs.github.io/Telethon/methods/channels/invite_to_channel.html
-            for user_id in to_add_users.split(" "):
-                try:
-                    await borg(
-                        functions.channels.InviteToChannelRequest(
-                            channel=event.chat_id, users=[user_id]
-                        )
-                    )
-                except Exception as e:
-                    await event.reply(str(e))
-            await event.reply("kidnapped user to the chat....")
+#################
+
+
+@idk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@ydk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@wdk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@hdk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@sdk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@adk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@bdk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@cdk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@edk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+@ddk.on(events.NewMessage(incoming=True, pattern=r"\.alive"))
+async def alive(event):
+  if event.sender_id in SMEX_USERS:
+    sed = await event.client.get_me()
+    kk = sed.first_name
+    k = sed.id
+    s = f"[{kk}](tg://user?id={k})"
+    tf = f"""
+**{s} Is Oɴ Fɪʀᴇ 🔥
+Hᴇʏᴀ D:) I Aᴍ Aʟɪᴠᴇ
+Aʟʟ Sʏsᴛᴇᴍs Aʀᴇ Wᴏʀᴋɪɴɢ Pʀᴏᴘᴇʟʏ!!
+Mᴀsᴛᴇʀ:-** **[Δɭαιи 🇮🇳](t.me/CoPYLess786)**
+**Dᴏ** `.help` **Tᴏ Cʜᴇᴄᴋ Mʏ Cᴏᴍᴍᴀɴᴅs!!**
+"""
+    await event.client.send_message(event.chat.id,tf, link_preview=False)
+import time
+from time import sleep
+
+@idk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@ydk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@wdk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@hdk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@sdk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@adk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@bdk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@cdk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@edk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+@ddk.on(events.NewMessage(incoming=True, pattern=r"\.purge"))
+async def purge(event):
+ if event.sender_id in SMEX_USERS:
+   start = time.perf_counter()
+   reply_msg = await event.get_reply_message()
+   if not reply_msg:
+       await event.reply(
+            "`Reply to a message to select where to start purging from.`")
+       return
+   messages = []
+   message_id = reply_msg.id
+   delete_to = event.message.id
+   messages.append(event.reply_to_msg_id)
+   for msg_id in range(message_id, delete_to + 1):
+        messages.append(msg_id)
+        if len(messages) == 100:
+            await event.client.delete_messages(event.chat_id, messages)
+            messages = []
+   await event.client.delete_messages(event.chat_id, messages)
+   time_ = time.perf_counter() - start
+   text = f"🗑 `Purged Messages` `in {time_:0.2f} seconds`"
+   #hdgs = await event.respond(text, parse_mode='markdown')
+   await event.delete()
+   sleep(1)
+   #await hdgs.delete()
+   await event.delete()
+
+
+#####################
+
+
+##################
+
+@idk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@ydk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@wdk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@hdk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@sdk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@adk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@bdk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@cdk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@edk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+@ddk.on(events.NewMessage(incoming=True, pattern=r"\.reply"))
+async def purge(event):
+ if event.sender_id in SMEX_USERS:
+  sed = event.text[6:]
+  k = await event.get_reply_message()
+  if not k:
+     await event.reply("Reply Any User")
+     return
+  await k.reply(sed)
+
+
+async def Start_Kardo_Bot():
+  await event.client.send_message("DeSTRoYxSuPPORT", "**I'm Ready For Spamming...! 🎉**")
+
+
+# ALaiN UNkiL OP UnKe DushMaN UNke LuND ki tOpi
 
 
 ################################
