@@ -965,7 +965,7 @@ async def get_users(event):
    return await event.reply("`Bsdk Chapal Phek Ke Maruga Agar Members Scrape Kiye To Lawde...`")
 
 #################
-
+import os
 amaan786 = os.environ.get("ALIVE_PIC",None)
 if not amaan786:
  amaan786="https://telegra.ph/file/ccf8de8cd3780b32b4d73.jpg"
@@ -1062,7 +1062,7 @@ async def purge(event):
 
 
 async def Start_Kardo_Bot():
-  await event.client.send_message("DeSTRoYxSuPPORT", "**I'm Ready For Spamming...! 🎉**")
+  await event.client.send_message("DeSTRoYxSuPPORT", "**YAARO KA MAI YAAR HUN**")
 
 
 # ALaiN UNkiL OP UnKe DushMaN UNke LuND ki tOpi
